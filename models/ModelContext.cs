@@ -15,20 +15,66 @@ namespace registration.models
         {
         }
 
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Contrato> Contrato { get; set; }
+        public virtual DbSet<Product> Product { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseOracle("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=xe)));Persist Security Info=True;User Id=c##grandemaipo;Password=1234;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:DefaultSchema", "C##GRANDEMAIPO");
+
+            modelBuilder.Entity<AspNetRoles>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedName)
+                    .HasName("RoleNameIndex")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Name).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedName).HasMaxLength(256);
+            });
+
+            modelBuilder.Entity<AspNetUsers>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedEmail)
+                    .HasName("EmailIndex");
+
+                entity.HasIndex(e => e.NormalizedUserName)
+                    .HasName("UserNameIndex")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Discriminator).IsRequired();
+
+                entity.Property(e => e.Email).HasMaxLength(256);
+
+                entity.Property(e => e.FullName)
+                    .HasColumnName("fullName")
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
+
+                entity.Property(e => e.TipoUsuario)
+                    .HasColumnName("TIPO_USUARIO")
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserName).HasMaxLength(256);
+            });
 
             modelBuilder.Entity<Contrato>(entity =>
             {
@@ -66,11 +112,48 @@ namespace registration.models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.HasKey(e => e.CodProducto);
+
+                entity.ToTable("PRODUCT");
+
+                entity.Property(e => e.CodProducto).HasColumnName("COD_PRODUCTO");
+
+                entity.Property(e => e.Calidad)
+                    .HasColumnName("CALIDAD")
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Cantidad).HasColumnName("CANTIDAD");
+
+                entity.Property(e => e.IdUser)
+                    .HasColumnName("ID_USER")
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TipoFruta)
+                    .HasColumnName("TIPO_FRUTA")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Valor)
+                    .HasColumnName("VALOR")
+                    .HasColumnType("NUMBER");
+            });
+
             modelBuilder.HasSequence("ISEQ$$_75619");
 
             modelBuilder.HasSequence("ISEQ$$_75622");
 
             modelBuilder.HasSequence("ISEQ$$_79101");
+
+            modelBuilder.HasSequence("ISEQ$$_82150");
 
             modelBuilder.HasSequence("S_USUARIO");
         }

@@ -9,58 +9,58 @@ using registration.models;
 
 namespace registration.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Productos")]
     [ApiController]
-    public class ContratosController : ControllerBase
+    public class ProductosController : ControllerBase
     {
         private readonly ModelContext _context;
 
-        public ContratosController(ModelContext context)
+        public ProductosController(ModelContext context)
         {
             _context = context;
         }
 
-        // GET: api/Contratos
+        // GET: api/Productos
         [HttpGet]
-        public IEnumerable<Contrato> GetContrato()
+        public IEnumerable<Product> GetProduct()
         {
-            return _context.Contrato;
+            return _context.Product;
         }
 
-        // GET: api/Contratos/5
+        // GET: api/Productos/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetContrato([FromRoute] int id)
+        public async Task<IActionResult> GetProduct([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var contrato = await _context.Contrato.FindAsync(id);
+            var product = await _context.Product.FindAsync(id);
 
-            if (contrato == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return Ok(contrato);
+            return Ok(product);
         }
 
-        // PUT: api/Contratos/5
+        // PUT: api/Productos/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutContrato([FromRoute] int id, [FromBody] Contrato contrato)
+        public async Task<IActionResult> PutProduct([FromRoute] int id, [FromBody] Product product)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != contrato.IdContratos)
+            if (id != product.CodProducto)
             {
                 return BadRequest();
             }
 
-            _context.Entry(contrato).State = EntityState.Modified;
+            _context.Entry(product).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace registration.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ContratoExists(id))
+                if (!ProductExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +81,45 @@ namespace registration.Controllers
             return NoContent();
         }
 
-        // POST: api/Contratos
+        // POST: api/Productos
         [HttpPost]
-        public async Task<IActionResult> PostContrato([FromBody] Contrato contrato)
+        public async Task<IActionResult> PostProduct([FromBody] Product product)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Contrato.Add(contrato);
+            _context.Product.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetContrato", new { id = contrato.IdContratos }, contrato);
+            return CreatedAtAction("GetProduct", new { id = product.CodProducto }, product);
         }
 
-        // DELETE: api/Contratos/5
+        // DELETE: api/Productos/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteContrato([FromRoute] int id)
+        public async Task<IActionResult> DeleteProduct([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var contrato = await _context.Contrato.FindAsync(id);
-            if (contrato == null)
+            var product = await _context.Product.FindAsync(id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            _context.Contrato.Remove(contrato);
+            _context.Product.Remove(product);
             await _context.SaveChangesAsync();
 
-            return Ok(contrato);
+            return Ok(product);
         }
 
-        private bool ContratoExists(int id)
+        private bool ProductExists(int id)
         {
-            return _context.Contrato.Any(e => e.IdContratos == id);
+            return _context.Product.Any(e => e.CodProducto == id);
         }
     }
 }
