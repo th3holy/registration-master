@@ -36,8 +36,17 @@ namespace registration.Controllers
 
         // POST api/<ContratoController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult Post([FromBody] Contrato contrato)
         {
+            try
+            {
+                context.Contrato.Add(contrato);
+                context.SaveChanges();
+                return Ok();
+            }catch(Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
         // PUT api/<ContratoController>/5

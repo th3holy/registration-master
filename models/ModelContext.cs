@@ -19,6 +19,8 @@ namespace registration.models
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Contrato> Contrato { get; set; }
         public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<Transporte> Transporte { get; set; }
+        public virtual DbSet<Ventas> Ventas { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -105,11 +107,6 @@ namespace registration.models
                     .HasColumnName("ID_USER")
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.Property(e => e.Run)
-                    .HasColumnName("RUN")
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -147,13 +144,70 @@ namespace registration.models
                     .HasColumnType("NUMBER");
             });
 
+            modelBuilder.Entity<Transporte>(entity =>
+            {
+                entity.HasKey(e => e.IdTransporte);
+
+                entity.ToTable("TRANSPORTE");
+
+                entity.Property(e => e.IdTransporte).HasColumnName("ID_TRANSPORTE");
+
+                entity.Property(e => e.IdProducto).HasColumnName("ID_PRODUCTO");
+
+                entity.Property(e => e.IdVentas).HasColumnName("ID_VENTAS");
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UsuarioTrans)
+                    .IsRequired()
+                    .HasColumnName("USUARIO_TRANS")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Ventas>(entity =>
+            {
+                entity.HasKey(e => e.IdVentas);
+
+                entity.ToTable("VENTAS");
+
+                entity.Property(e => e.IdVentas).HasColumnName("ID_VENTAS");
+
+                entity.Property(e => e.Direccion)
+                    .HasColumnName("DIRECCION")
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IdProducto).HasColumnName("ID_PRODUCTO");
+
+                entity.Property(e => e.NombreComprador)
+                    .IsRequired()
+                    .HasColumnName("NOMBRE_COMPRADOR")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Transferencia)
+                    .HasColumnName("TRANSFERENCIA")
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.HasSequence("DBOBJECTID_SEQUENCE");
+
             modelBuilder.HasSequence("ISEQ$$_75619");
 
             modelBuilder.HasSequence("ISEQ$$_75622");
 
             modelBuilder.HasSequence("ISEQ$$_79101");
 
-            modelBuilder.HasSequence("ISEQ$$_82150");
+            modelBuilder.HasSequence("ISEQ$$_84428");
+
+            modelBuilder.HasSequence("ISEQ$$_84430");
+
+            modelBuilder.HasSequence("ISEQ$$_84434");
 
             modelBuilder.HasSequence("S_USUARIO");
         }

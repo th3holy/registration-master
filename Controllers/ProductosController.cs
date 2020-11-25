@@ -48,37 +48,18 @@ namespace registration.Controllers
 
         // PUT: api/Productos/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct([FromRoute] int id, [FromBody] Product product)
+        public ActionResult PutProduct([FromRoute] int id, [FromBody] Product product)
         {
-            if (!ModelState.IsValid)
+            if( product.CodProducto==id)
             {
-                return BadRequest(ModelState);
+                _context.Entry(product).State = EntityState.Modified;
+                _context.SaveChanges();
+                return Ok();
             }
-
-            if (id != product.CodProducto)
+            else
             {
                 return BadRequest();
             }
-
-            _context.Entry(product).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Productos
