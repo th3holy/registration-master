@@ -34,7 +34,7 @@ namespace registration.Controllers
                 user.fullName,
                 user.Email,
                 user.UserName,
-
+                user.Id,
             };
         } 
 

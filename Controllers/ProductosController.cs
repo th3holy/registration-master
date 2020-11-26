@@ -48,19 +48,18 @@ namespace registration.Controllers
 
         // PUT: api/Productos/5
         [HttpPut("{id}")]
-        public ActionResult PutProduct([FromRoute] int id, [FromBody] Product product)
+        public async  Task<IActionResult> PutProduct( [FromBody] Product product)
         {
-            if( product.CodProducto==id)
-            {
-                _context.Entry(product).State = EntityState.Modified;
-                _context.SaveChanges();
-                return Ok();
-            }
-            else
+          if(product == null)
             {
                 return BadRequest();
             }
+            _context.Entry(product).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
+
+       
 
         // POST: api/Productos
         [HttpPost]
