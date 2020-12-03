@@ -43,7 +43,7 @@ namespace registration.Controllers
                 context.Contrato.Add(contrato);
                 context.SaveChanges();
                 return Ok();
-            }catch(Exception ex)
+            }catch(Exception )
             {
                 return BadRequest();
             }

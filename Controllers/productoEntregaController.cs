@@ -20,11 +20,19 @@ namespace registration.Controllers
         {
             this.context = context;
         }
-        // GET: api/<productoEntregaController>
+       
+        // GET: api/<ProductoCompradoController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Product> Get()
         {
-            return new string[] { "value1", "value2" };
+            return context.Product.Where(u => u.Status == "Entrega").ToList();
+        }
+
+        // GET api/<ProductoCompradoController>/5
+        [HttpGet("{id}")]
+        public IEnumerable<Product> Get(string id)
+        {
+            return context.Product.Where(u => u.IdUser == id).Where(u => u.Status == "Entrega").ToList();
         }
 
 

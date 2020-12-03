@@ -10,31 +10,37 @@ using registration.models;
 
 namespace registration.Controllers
 {
-    [Route("api/productoventa")]
+    [Route("api/productocomprado")]
     [ApiController]
-    public class productoVentaController : ControllerBase
+    public class ProductoCompradoController : ControllerBase
     {
         private readonly ModelContext context;
 
-        public productoVentaController(ModelContext context)
+        public ProductoCompradoController(ModelContext context)
         {
             this.context = context;
-        }
-        // GET: api/<productoVentaController>
+        } 
+        // GET: api/<ProductoCompradoController>
         [HttpGet]
         public IEnumerable<Product> Get()
         {
-            return context.Product.Where(x => x.Status == "Venta").ToList();
+            return context.Product.Where(u => u.Status == "Comprado").ToList();
         }
+
         // GET api/<ProductoCompradoController>/5
         [HttpGet("{id}")]
         public IEnumerable<Product> Get(string id)
         {
-            return context.Product.Where(u => u.IdUser == id).Where(u => u.Status == "Venta").ToList();
+            return context.Product.Where(u => u.IdUser == id).Where(u=>u.Status == "Comprado").ToList();
         }
 
+        // POST api/<ProductoCompradoController>
+        [HttpPost]
+        public void Post([FromBody] string value)
+        {
+        }
 
-        // PUT api/<productoVentaController>/5
+        // PUT api/<ProductoCompradoController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Status([FromRoute] int id)
         {
@@ -46,8 +52,12 @@ namespace registration.Controllers
             if (producto == null)
             {
                 return NotFound();
+
             }
-            producto.Status = "Venta";
+
+            producto.Status = "Comprado";
+
+
             try
             {
                 await context.SaveChangesAsync();
@@ -59,6 +69,10 @@ namespace registration.Controllers
             return Ok();
         }
 
-
+        // DELETE api/<ProductoCompradoController>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
     }
 }
