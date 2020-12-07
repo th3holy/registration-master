@@ -26,12 +26,11 @@ namespace registration.Controllers
             return context.AspNetUsers.Where(x => x.TipoUsuario == "Transportista").ToList();
         }
 
-        //// GET api/<TransporteController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        [HttpGet("{id}")]
+        public Transporte Get (int id)
+        {
+            return context.Transporte.FirstOrDefault(x => x.IdProducto == id);
+        }
 
         //// POST api/<TransporteController>
         //[HttpPost]
