@@ -92,7 +92,7 @@ namespace registration
                 app.UseDeveloperExceptionPage();
             }
             app.UseCors(builder =>
-            builder.WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString())
+            builder.WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString(), Configuration["ApplicationSettings:Client_URL2"].ToString())
             .AllowAnyHeader()
             .AllowAnyMethod());
 
